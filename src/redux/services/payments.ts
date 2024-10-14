@@ -194,20 +194,19 @@ export const paymentsAPI = api.injectEndpoints({
     }),
 
     
-    cancelLPointPayment: builder.mutation<any, { token: string; orderId: string }>({
-      query: ({ token, orderId }) => ({
+    cancelLPointPayment: builder.mutation<{ data: {} }, { token: string; aprvMgNo: string }>({
+      query: ({ token, aprvMgNo }) => ({
         url: `/v1/client/web-site/Lpoint/cancel`,
         method: "POST",
         body: {
-          orderId: orderId,
+          aprvMgNo,
         },
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
-          'Access-Control-Allow-Origin': '*',
         },
       }),
-      transformResponse: (rawResult: any) => rawResult,
+      transformResponse: (rawResult: { data: {} }) => rawResult,
     }),
 
   }),

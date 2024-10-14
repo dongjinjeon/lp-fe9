@@ -1,22 +1,22 @@
 import { UserContext } from '@context/UserContext';
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { cancelTossPmntOrder } from '../../pages/common/paymentService';
 import { useCancelLPointPaymentMutation } from '../../redux/services/payments';
 
 const PaymentDetailPopup = ({
   isOpen,
   setIsOpen,
   selectedItem,
+  onCancelSuccess,
 }: {
   isOpen: any;
   setIsOpen: any;
   selectedItem: any;
+  onCancelSuccess: (canceledItem: any) => void;
 }) => {
   const navigate = useNavigate(); 
   const { session_token } = useContext(UserContext);
   const [isCancelDisabled, setIsCancelDisabled] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
   const [cancelLPointPayment] = useCancelLPointPaymentMutation();
 
   const handleClosePopup = () => {
@@ -24,44 +24,32 @@ const PaymentDetailPopup = ({
   };
 
   const handleCancelPayment = async () => {
-    if (!isChecked) {
-      alert("필수 동의 사항에 체크해주세요.");
-      return;
-    }
-
     try {
       if (!session_token) {
         throw new Error('세션 토큰이 없습니다. 다시 로그인해 주세요.');
       }
 
-      let result;
-      if (selectedItem.type === 'lpoint') {
-        result = await cancelLPointPayment({
-          token: session_token,
-          orderId: selectedItem.orderId,
-        }).unwrap();
-      } else {
-        result = await cancelTossPmntOrder({
-          orderId: selectedItem.orderId,
-          paymentKey: selectedItem.payments.paymentKey,
-          cancel_reason: '고객 요청',
-          token: session_token,
-        });
-      }
+      const result = await cancelLPointPayment({
+        token: session_token,
+        aprvMgNo: selectedItem.aprvMgNo,
+      }).unwrap();
 
-      if (result.success || result.code === 0) {
-        alert("결제가 성공적으로 취소되었습니다.");
+      if (result.data && Object.keys(result.data).length === 0) {
+        alert("결제가 취소되었습니다.");
         setIsCancelDisabled(true);
-        handleClosePopup();
-        navigate('/', { replace: true });
+        onCancelSuccess({ ...selectedItem, Status: 2 });
+        setTimeout(() => {
+          handleClosePopup();
+        }, 1000);
       } else {
-        throw new Error(result.message || "결제 취소에 실패했습니다.");
+        throw new Error("결제 취소에 실패했습니다.");
       }
     } catch (error: any) {
       console.error("결제 취소 에러:", error);
       let errorMessage = "결제 취소 중 오류가 발생했습니다.";
-      if (error.data && error.data.message) {
-        errorMessage += ` 상세 내용: ${error.data.message}`;
+      if (error.data) {
+        console.error("에러 데이터:", error.data);
+        errorMessage += ` 상세 내용: ${JSON.stringify(error.data)}`;
       } else if (error.message) {
         errorMessage += ` 상세 내용: ${error.message}`;
       }
@@ -130,9 +118,9 @@ const PaymentDetailPopup = ({
             </div>
 
             <button
-              className={`flex w-full h-7 mt-5 ${isCancelDisabled || selectedItem.Status === 2 || !isChecked ? 'bg-gray-400' : 'bg-alco-mint'} font-thin text-white font-notokr rounded-[8px] justify-center items-center ml-auto`}
+              className={`flex w-full h-7 mt-5 ${isCancelDisabled || selectedItem.Status === 2 ? 'bg-gray-400' : 'bg-alco-mint'} font-thin text-white font-notokr rounded-[8px] justify-center items-center ml-auto`}
               onClick={handleCancelPayment} 
-              disabled={isCancelDisabled || selectedItem.Status === 2 || !isChecked} 
+              disabled={isCancelDisabled || selectedItem.Status === 2} 
             >
               {"결제 취소"}
             </button>

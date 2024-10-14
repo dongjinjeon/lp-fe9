@@ -14,7 +14,7 @@ const PaymentSuccessPopup: React.FC<PaymentSuccessPopupProps> = ({ isOpen, onClo
       <div className="border border-black border-4 border-solid relative font-notokr bg-white rounded-md shadow-lg z-40 w-96 bg-gray-100">
         <div className="h-12 bg-alco-mint flex px-[1.5rem]">
           <div className="font-notokr text-white font-bold my-auto">
-            ���� �Ϸ�
+            결제가 완료되었습니다
           </div>
           <button
             onClick={onClose}
@@ -38,7 +38,7 @@ const PaymentSuccessPopup: React.FC<PaymentSuccessPopupProps> = ({ isOpen, onClo
         </div>
         <div className="px-[1.5rem] py-3">
           <div className="gap-4 flex flex-col">
-            <div>������ ���������� �Ϸ�Ǿ����ϴ�.</div>
+            <div>충전내역에서 자세히 결제내역을 볼 수 있습니다</div>
           </div>
         </div>
       </div>

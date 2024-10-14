@@ -16,7 +16,7 @@ export const Charged = () => {
   const navigate = useNavigate();
   const { userId, chargeLog, getChargeLog, chargeLogCnt, session_token } = useContext(UserContext);
   const [page, setPage] = useState<number>(1);
-  const [data, setData] = useState<any>(chargeLog);
+  const [data, setData] = useState<any[]>(chargeLog);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [lpointPayments, setLpointPayments] = useState<Payment[]>([]);
@@ -80,6 +80,14 @@ export const Charged = () => {
     setIsOpen(true);
   };
 
+  const handleCancelSuccess = (canceledItem: any) => {
+    setData((prevData: any[]) => 
+      prevData.map((item: any) => 
+        item.aprvMgNo === canceledItem.aprvMgNo ? { ...item, Status: 2 } : item
+      )
+    );
+  };
+
   return (
     <div className="">
       <div className="h-[10rem] max-lg:h-[6rem]">
@@ -141,6 +149,7 @@ export const Charged = () => {
           isOpen={isOpen}
           setIsOpen={setIsOpen}
           selectedItem={selectedItem}
+          onCancelSuccess={handleCancelSuccess}
         />
       )}
     </div>
@@ -165,7 +174,7 @@ const Content = ({
             <span className="text-lg">{item.createdAt}</span>
             <span className="text-base">{item.default_coin + item.bonus_coin}Coin</span>
             <span className="text-black text-base font-medium">
-              {item.amount}원
+              {item.payments && item.payments.cardAmount}원
             </span>
           </div>
           <div className="flex items-center text-alco-mint text-xl max-sm:justify-start">
