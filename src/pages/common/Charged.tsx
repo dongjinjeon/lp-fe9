@@ -16,7 +16,7 @@ export const Charged = () => {
   const navigate = useNavigate();
   const { userId, chargeLog, getChargeLog, chargeLogCnt, session_token } = useContext(UserContext);
   const [page, setPage] = useState<number>(1);
-  const [data, setData] = useState<any[]>(chargeLog);
+  const [data, setData] = useState<any>(chargeLog);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [lpointPayments, setLpointPayments] = useState<Payment[]>([]);
@@ -83,7 +83,16 @@ export const Charged = () => {
   const handleCancelSuccess = (canceledItem: any) => {
     setData((prevData: any[]) => 
       prevData.map((item: any) => 
-        item.aprvMgNo === canceledItem.aprvMgNo ? { ...item, Status: 2 } : item
+        item.aprvMgNo === canceledItem.aprvMgNo 
+          ? { ...item, Status: 2 } 
+          : item
+      )
+    );
+    setLpointPayments((prevPayments: Payment[]) =>
+      prevPayments.map((item) =>
+        (item as any).aprvMgNo === canceledItem.aprvMgNo
+          ? { ...item, Status: 2 }
+          : item
       )
     );
   };
@@ -163,6 +172,10 @@ const Content = ({
   item: any;
   onClick: () => void;
 }) => {
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'KRW' }).format(amount);
+  };
+
   return (
     <>
       <div className="flex flex-row items-center my-3 px-5 cursor-pointer" onClick={onClick}>
@@ -173,8 +186,8 @@ const Content = ({
           <div className="flex items-center font-notokr text-left gap-4 max-sm:w-full">
             <span className="text-lg">{item.createdAt}</span>
             <span className="text-base">{item.default_coin + item.bonus_coin}Coin</span>
-            <span className="text-black text-base font-medium">
-              {item.payments && item.payments.cardAmount}원
+            <span className={`text-base font-medium ${item.Status === 2 ? 'text-red-500' : 'text-black'}`}>
+              {item.Status === 2 ? '취소됨' : formatCurrency(item.amount)}
             </span>
           </div>
           <div className="flex items-center text-alco-mint text-xl max-sm:justify-start">

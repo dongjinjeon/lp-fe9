@@ -194,7 +194,7 @@ export const paymentsAPI = api.injectEndpoints({
     }),
 
     
-    cancelLPointPayment: builder.mutation<{ data: {} }, { token: string; aprvMgNo: string }>({
+    cancelLPointPayment: builder.mutation<{ data: {}; code: number; timestamp: string }, { token: string; aprvMgNo: string }>({
       query: ({ token, aprvMgNo }) => ({
         url: `/v1/client/web-site/Lpoint/cancel`,
         method: "POST",
@@ -206,7 +206,7 @@ export const paymentsAPI = api.injectEndpoints({
           Authorization: `Bearer ${token}`,
         },
       }),
-      transformResponse: (rawResult: { data: {} }) => rawResult,
+      transformResponse: (rawResult: { data: {}; code: number; timestamp: string }) => rawResult,
     }),
 
   }),

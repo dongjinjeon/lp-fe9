@@ -34,10 +34,12 @@ const PaymentDetailPopup = ({
         aprvMgNo: selectedItem.aprvMgNo,
       }).unwrap();
 
-      if (result.data && Object.keys(result.data).length === 0) {
-        alert("결제가 취소되었습니다.");
+      console.log("취소 응답:", result);
+
+      if (result && result.code === 200) {
+        alert("결제 취소 완료");
         setIsCancelDisabled(true);
-        onCancelSuccess({ ...selectedItem, Status: 2 });
+        onCancelSuccess({ ...selectedItem, Status: 2, amount: 0 });
         setTimeout(() => {
           handleClosePopup();
         }, 1000);

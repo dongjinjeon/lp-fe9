@@ -31,6 +31,7 @@ export interface Payment {
     lastTransactionKey: string;
     paymentKey: string;
   };
+  aprvMgNo?: string; // aprvMgNo 속성 추가
 }
 
 export interface GetAllPaymentsRes {
