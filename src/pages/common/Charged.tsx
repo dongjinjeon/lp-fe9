@@ -45,7 +45,6 @@ export const Charged = () => {
 
   const fetchLpointPayments = async (page: number) => {
     if (!session_token) {
-      console.error('세션 토큰이 정의되지 않았습니다');
       return;
     }
 
@@ -62,10 +61,9 @@ export const Charged = () => {
         setLpointPayments(result.data.list);
         setLpointPageCount(Math.ceil(result.data.total / 10));
       } else {
-        console.error('L.POINT 결제 정보 가져오기 오류: 결제 정보 없음');
+
       }
     } catch (error) {
-      console.error('L.POINT 결제 정보 가져오기 오류:', error);
     }
   };
 

@@ -34,8 +34,6 @@ const PaymentDetailPopup = ({
         aprvMgNo: selectedItem.aprvMgNo,
       }).unwrap();
 
-      console.log("취소 응답:", result);
-
       if (result && result.code === 200) {
         alert("결제 취소 완료");
         setIsCancelDisabled(true);

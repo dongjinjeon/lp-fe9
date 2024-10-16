@@ -184,7 +184,7 @@ const Payments = () => {
       }
     } catch (error) {
       console.error("Payment confirmation error:", error);
-      setConfirmationMessage("결제 확인 중 오류가 발생했습니다. 자세한 내용은 콘솔을 확인해주세요.");
+      setConfirmationMessage("결제 확인 중 오류가 발생했습니다.");
     }
   };
 
