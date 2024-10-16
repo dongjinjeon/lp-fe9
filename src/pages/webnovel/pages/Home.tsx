@@ -1,13 +1,13 @@
-import CarouselList from "@components/CarouselListtWebnovel"
-import Ranking from "@components/Ranking";
-import {Header} from "@components/Header";
 import CarouselComponent from "@components/CarouselComponent/CarouselComponent";
-import {ReactComponent as CalendarIcon} from "@svg/CalendarIcon.svg";
-import {ReactComponent as ThumbsUpIcon} from "@svg/ThumbsUpIcon.svg";
-import {ReactComponent as TrophyIcon} from "@svg/TrophyIcon.svg";
-import {useTranslation} from "react-i18next";
-import React, {useContext} from "react";
-import {WebnovelContext} from "@context/WebnovelContext";
+import CarouselList from "@components/CarouselListtWebnovel";
+import { Header } from "@components/Header";
+import Ranking from "@components/Ranking";
+import { WebnovelContext } from "@context/WebnovelContext";
+import { ReactComponent as CalendarIcon } from "@svg/CalendarIcon.svg";
+import { ReactComponent as ThumbsUpIcon } from "@svg/ThumbsUpIcon.svg";
+import { ReactComponent as TrophyIcon } from "@svg/TrophyIcon.svg";
+import { useContext } from "react";
+import { useTranslation } from "react-i18next";
 
 export const Home = () => {
   const {t} = useTranslation();
@@ -173,7 +173,7 @@ export const Home = () => {
             data={millionWebnovel}
             navTo="/webnovel/detailed/million"
             hasNav
-            // isSix
+            
           />
         </div>
       </div>

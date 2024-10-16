@@ -15,7 +15,7 @@ export const userApi = api.injectEndpoints({
         return rawResult.data.data;
       },
     }),
-    setFavorite: builder.mutation<any, { WebtoonID: number, token: any }>({ // 관심 웹툰 등록 및 해제
+    setFavorite: builder.mutation<any, { WebtoonID: number, token: any }>({ 
       query: ({ WebtoonID, token }) => ({
         url: `/v1/client/web-site/webtoon/recommended/register`,
         method: "POST",

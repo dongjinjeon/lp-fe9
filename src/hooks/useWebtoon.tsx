@@ -65,7 +65,7 @@ export const useWebtoon = () => {
   const [getBanner, { data: bannerData, isError: bannerError }] =
     useGetBannerMutation();
   const [getSubBanner, { data: subBannerData }] = useGetBannerMutation();
-  // console.log(subBannerData);
+  
   const [getNewWebtoon, { data: newWebtoonData, isError: newWebtoonError }] =
     useGetNewWebtoonMutation();
   const [getRanking, { data: rankingData, isError: rankError }] =

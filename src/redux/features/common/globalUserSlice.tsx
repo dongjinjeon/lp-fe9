@@ -27,7 +27,7 @@ const globalUserSlice = createSlice({
   initialState,
   reducers: {
     setUser(state, action: PayloadAction<IGlobalUserState>) {
-      // replace, but if null, keep the old value
+      
       state = { ...state, ...action.payload };
       return state;
     },

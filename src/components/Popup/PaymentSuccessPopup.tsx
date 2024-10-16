@@ -38,7 +38,7 @@ const PaymentSuccessPopup: React.FC<PaymentSuccessPopupProps> = ({ isOpen, onClo
         </div>
         <div className="px-[1.5rem] py-3">
           <div className="gap-4 flex flex-col">
-            <div>충전내역에서 결제내역을 자세히 볼 수 있습니다</div>
+            <div>충전내역에서 자세히 볼 수 있습니다</div>
           </div>
         </div>
       </div>

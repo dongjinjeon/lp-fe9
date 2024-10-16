@@ -160,7 +160,7 @@ export const paymentsAPI = api.injectEndpoints({
 
     useLPoint: builder.mutation<any, { token: string; deChnlDvC: string; mcNo: string; aprvMgNo: string }>({
       query: ({ token, deChnlDvC, mcNo, aprvMgNo }) => ({
-        url: `/v1/client/web-site/Lpoint/use`, // 
+        url: `/v1/client/web-site/Lpoint/use`, 
         method: "POST",
         body: {
           deChnlDvC,
