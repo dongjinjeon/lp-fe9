@@ -29,10 +29,7 @@ const Payments = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { userId, userName, session_token } = useContext(UserContext);
-  
-
-  console.log("Current session token in Payments:", session_token);
-
+ 
   const { executePreparePayment, executeGetChargeList } = useContext(PaymentContext);
   const [data, setData] = useState<DataItem[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<number | null>(null);
@@ -59,7 +56,7 @@ const Payments = () => {
   const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
-    console.log("Current ContentCoin balance:", balance);
+
   }, [balance]);
 
   useEffect(() => {
@@ -116,32 +113,31 @@ const Payments = () => {
   const checkLPointCardStatus = async () => {
     if (session_token) {
       try {
-        console.log('Checking L.Point card status...');
         const response = await checkLPointCard({ token: session_token }).unwrap();
-        console.log('L.Point card status response:', response);
+
         if (response.code === 200 && response.data && response.data.data) {
           if (response.data.data.valid === 1) {
-            console.log('L.Point card is registered');
+
             setIsCardRegistered(true);
 
             await fetchLPointBalance();
           } else {
-            console.log('L.Point card is not registered');
+
             setIsCardRegistered(false);
             setLpointAvailablePoints(null);
           }
         } else {
-          console.log('Failed to check L.Point card status');
+
           setIsCardRegistered(false);
           setLpointAvailablePoints(null);
         }
       } catch (error) {
-        console.error('Error checking L.Point card status:', error);
+
         setIsCardRegistered(false);
         setLpointAvailablePoints(null);
       }
     } else {
-      console.log('No session token available');
+
     }
   };
 
@@ -149,10 +145,8 @@ const Payments = () => {
     if (session_token) {
       try {
         const balanceResponse = await getLPointBalance({ token: session_token, cardNumber: "" }).unwrap();
-        console.log('L.Point balance response:', balanceResponse);
         if (balanceResponse.code === 200 && balanceResponse.data && balanceResponse.data.data) {
           setLpointAvailablePoints(balanceResponse.data.data.avlPt);
-          console.log('L.Point available points:', balanceResponse.data.data.avlPt);
         }
       } catch (error) {
         console.error('Error fetching L.Point balance:', error);
@@ -174,18 +168,14 @@ const Payments = () => {
 
   const confirmLPointPayment = async (aprvMgNo: string) => {
     try {
-      console.log("Sending L.Point confirm request...");
       const confirmResponse = await lPointConfirm({
         token: session_token!,
         aprvMgNo: aprvMgNo
       }).unwrap();
 
-      console.log("Confirm response received:", confirmResponse);
 
       if (confirmResponse.code === 200) {
-        console.log("Payment successful");
         await updateContentCoinBalance(); 
-        console.log("ContentCoin balance after payment:", balance); 
         await fetchLPointBalance(); 
         setIsSuccessPopupOpen(true);
       } else {
@@ -213,7 +203,6 @@ const Payments = () => {
         console.error("Failed to update ContentCoin balance:", data.message);
       }
     } catch (error) {
-      console.error("Error updating ContentCoin balance:", error);
     }
   };
 
@@ -225,7 +214,6 @@ const Payments = () => {
 
     try {
       const selectedProductData = data[selectedProduct];
-      console.log("Sending L.Point prepare request...");
       const prepareResponse = await lPointPrepare({
         token: session_token,
         productId: selectedProduct,
@@ -233,7 +221,6 @@ const Payments = () => {
         productName: `${selectedProductData.default_coin} ContentCoin`
       }).unwrap();
 
-      console.log("L.Point prepare response:", prepareResponse);
 
       if (prepareResponse.code === 200 && prepareResponse.data && prepareResponse.data.data) {
         const { aprvMgNo } = prepareResponse.data.data;
@@ -251,19 +238,6 @@ const Payments = () => {
           formRef.current.ssoTkn.value = ""; 
           formRef.current.rspDvC.value = "1"; 
           formRef.current.rspC.value = ""; 
-
-          console.log("Form data:", {
-            deChnlDvC: formRef.current.deChnlDvC.value,
-            mcNo: formRef.current.mcNo.value,
-            aprvMgNo: formRef.current.aprvMgNo.value,
-            srnDvC: formRef.current.srnDvC.value,
-            callbackFn: formRef.current.callbackFn.value,
-            returnUrl: formRef.current.returnUrl.value,
-            ssoTkn: formRef.current.ssoTkn.value,
-            rspDvC: formRef.current.rspDvC.value,
-            rspC: formRef.current.rspC.value
-          });
-
           formRef.current.target = "popup";
           formRef.current.method = "post";
           formRef.current.action = "https://dev.lw.lpoint.com:2943/app/point/LWPT100200.do";
@@ -273,7 +247,6 @@ const Payments = () => {
           const checkPopupClosed = setInterval(() => {
             if (popup.closed) {
               clearInterval(checkPopupClosed);
-              console.log("L.POINT payment popup closed");
 
               confirmLPointPayment(aprvMgNo);
             }
@@ -286,7 +259,7 @@ const Payments = () => {
         throw new Error(prepareResponse.message || "결제 준비에 실패했습니다.");
       }
     } catch (error) {
-      console.error("L.POINT payment error:", error);
+
       if (error instanceof Error) {
         setConfirmationMessage(`L.POINT 결제 중 오류가 발생했습니다: ${error.message}`);
       } else {
@@ -311,8 +284,6 @@ const Payments = () => {
       return;
     }
 
-    console.log("Starting payment process...");
-    console.log("Selected product:", selectedProduct);
 
     if (isCardRegistered && lpointAvailablePoints !== null && lpointAvailablePoints >= data[selectedProduct].price) {
       await handleLPointPayment();
@@ -360,7 +331,6 @@ const Payments = () => {
   const handleLpointBalanceCheck = async (cardNumber: string, balance: number) => {
     setIsCheckingBalance(true);
     try {
-      console.log('Received balance:', balance);
       setLpointBalance(balance);
       if (session_token) {
         const response = await getLPointBalance({ 
