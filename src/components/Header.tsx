@@ -345,7 +345,7 @@ export const Header = () => {
               mode === "dark" ? "text-white" : "text-black"
             } z-20 h-full flex flex-row px-0 max-w-[1200px] max-header:px-4`}
           >
-            <div className="h-full flex flex-row items-center font-notokr font-medium gap-16 max-header:gap-3">
+            {/* <div className="h-full flex flex-row items-center font-notokr font-medium gap-16 max-header:gap-3">
               <div className="h-full flex-row items-center flex">
                 <img
                     src="/logocolor.png"
@@ -363,7 +363,7 @@ export const Header = () => {
                         // }}
                     />
                 ) : null}
-              </div>
+              </div> */}
               <div className="">
                 <div
                     className={`${

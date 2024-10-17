@@ -141,7 +141,7 @@ export const useWebtoon = () => {
   ]);
 
   useEffect(() => {
-    const islpointDomain = window.location.hostname === "lpoint.allcomics.org";
+    const isshinhanDomain = window.location.hostname === "shinhan.allcomics.org";
     
     getTodayFreeWebtoon({
       page: 1,
@@ -166,14 +166,14 @@ export const useWebtoon = () => {
     getBanner({
       page: 1,
       count: 5,
-      category: islpointDomain ? "lpoint" : "general",
+      category: isshinhanDomain ? "shinhan" : "general",
       SubCategory: "main",
       Locale: currentLanguage,
     });
     getSubBanner({
       page: 1,
       count: 5,
-      category: islpointDomain ? "lpoint" : "general",
+      category: isshinhanDomain ? "shinhan" : "general",
       SubCategory: "bottom",
       Locale: currentLanguage,
     });
